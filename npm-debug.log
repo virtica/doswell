@@ -1,0 +1,1351 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'rfidea' ]
+2 info using npm@2.14.3
+3 info using node@v4.1.0
+4 verbose install initial load of /Users/virtica/Development/NodeJS/package.json
+5 warn package.json doswell@1.0.0 No description
+6 warn package.json doswell@1.0.0 No repository field.
+7 warn package.json doswell@1.0.0 No README data
+8 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/package.json
+9 silly cache add args [ 'rfidea', null ]
+10 verbose cache add spec rfidea
+11 silly cache add parsed spec Result {
+11 silly cache add   raw: 'rfidea',
+11 silly cache add   scope: null,
+11 silly cache add   name: 'rfidea',
+11 silly cache add   rawSpec: '',
+11 silly cache add   spec: '*',
+11 silly cache add   type: 'range' }
+12 silly addNamed rfidea@*
+13 verbose addNamed "*" is a valid semver range for rfidea
+14 silly addNameRange { name: 'rfidea', range: '*', hasData: false }
+15 silly mapToRegistry name rfidea
+16 silly mapToRegistry using default registry
+17 silly mapToRegistry registry https://registry.npmjs.org/
+18 silly mapToRegistry uri https://registry.npmjs.org/rfidea
+19 verbose addNameRange registry:https://registry.npmjs.org/rfidea not in flight; fetching
+20 verbose request uri https://registry.npmjs.org/rfidea
+21 verbose request no auth needed
+22 info attempt registry request try #1 at 5:11:21 PM
+23 verbose request id 52d80268121247ef
+24 verbose etag "5S4E6Y1AGP5MQU3LFVKX7T28W"
+25 http request GET https://registry.npmjs.org/rfidea
+26 http 304 https://registry.npmjs.org/rfidea
+27 silly get cb [ 304,
+27 silly get   { date: 'Tue, 29 Sep 2015 22:11:26 GMT',
+27 silly get     via: '1.1 varnish',
+27 silly get     'cache-control': 'max-age=60',
+27 silly get     etag: '"5S4E6Y1AGP5MQU3LFVKX7T28W"',
+27 silly get     age: '0',
+27 silly get     connection: 'keep-alive',
+27 silly get     'x-served-by': 'cache-iad2143-IAD',
+27 silly get     'x-cache': 'MISS',
+27 silly get     'x-cache-hits': '0',
+27 silly get     'x-timer': 'S1443564686.679845,VS0,VE372',
+27 silly get     vary: 'Accept' } ]
+28 verbose etag https://registry.npmjs.org/rfidea from cache
+29 verbose get saving rfidea to /Users/virtica/.npm/registry.npmjs.org/rfidea/.cache.json
+30 silly addNameRange number 2 { name: 'rfidea', range: '*', hasData: true }
+31 silly addNameRange versions [ 'rfidea', [ '0.0.2' ] ]
+32 silly addNamed rfidea@0.0.2
+33 verbose addNamed "0.0.2" is a plain semver version for rfidea
+34 silly cache afterAdd rfidea@0.0.2
+35 verbose afterAdd /Users/virtica/.npm/rfidea/0.0.2/package/package.json not in flight; writing
+36 verbose afterAdd /Users/virtica/.npm/rfidea/0.0.2/package/package.json written
+37 silly install resolved [ { name: 'rfidea',
+37 silly install resolved     description: 'Your contactless discography',
+37 silly install resolved     version: '0.0.2',
+37 silly install resolved     author: { name: 'Clément Désiles', email: 'main@jokester.fr' },
+37 silly install resolved     main: 'index.js',
+37 silly install resolved     directories: { test: 'test' },
+37 silly install resolved     dependencies:
+37 silly install resolved      { nfc: '0.0.4',
+37 silly install resolved        mongoskin: '0.6.0',
+37 silly install resolved        mpd: '1.0.x',
+37 silly install resolved        commander: '2.0.0' },
+37 silly install resolved     engines: { node: '~0.8.0' },
+37 silly install resolved     keywords: [ 'tag', 'rfid', 'music', 'disc', 'cd', 'discography' ],
+37 silly install resolved     license: 'MIT',
+37 silly install resolved     repository:
+37 silly install resolved      { type: 'git',
+37 silly install resolved        url: 'git+https://github.com/jokesterfr/rfidea.git' },
+37 silly install resolved     scripts: { start: 'node server.js' },
+37 silly install resolved     readme: '# RFIDEA\n\n## About the stuff \n\nAn idea to manage your contactless discography, written in NodeJS, with simple tools provided.\nThis project is still experimental, any contributions are welcome.\n\n## Installing\n\nYou need to install these dependencies :\n\n* mpd - music player daemon\n* libnfc\n* pcsc\n* mongodb\n\nThen just do as usual:\n\n\tnpm install\n\nNote you would likely require a contactless reader, and some contactless tags. I can suggest you the ones I\'ve got:\n\n* [Mifare chips 13.56Mhz ISO14443A](http://www.aliexpress.com/snapshot/237740055.html)\n* [ACR122U 13.56 MHz RFID Card Reader](http://www.aliexpress.com/snapshot/237740054.html)\n\nThen you have to set chips on the back of each CD cover.\n\nI would not recommand the ACR122U reader, beacause it\'s not officialy [supported by PCSC](http://pcsclite.alioth.debian.org/ccid/unsupported.html#0x072F0x2200), and have some limited support on Linux (no extended APDU).\n\nI could support it this way nevertheless: \n\n### ACR122 driver from ACS\n\n~~~{.bash}\nwget http://www.acs.com.hk/drivers/eng/ACR122_Driver_Lnx_Mac10.5_10.6_10.7_104_P.zip\nunzip -d acr122u ACR122_Driver_Lnx_Mac10.5_10.6_10.7_104_P.zip\ncd acr122u \ntar -jxvf acsccid-1.0.4\ncd acsccid-1.0.4\n./configure\nmake\nsudo make install\n~~~\n\n### NFC-tools\n\n~~~{.bash}\nsudo apt-get install libusb-dev libpcsclite-dev debhelper libtool dh-autoreconf\nsudo apt-get install libusb-0.1-4 libpcsclite1 libccid pcscd\ngit clone https://code.google.com/p/libnfc/\ncd libnfc\ndpkg-buildpackage -b -us -uc\nsudo dpkg -i ../libnfc*.deb\n# you can then try `nfc-list`\n~~~\n\n## Licence\n\nThe MIT License (MIT)\n\nCopyright (c) 2013 Clément Désiles <main@jokester.fr>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the "Software"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n',
+37 silly install resolved     readmeFilename: 'README.md',
+37 silly install resolved     _id: 'rfidea@0.0.2',
+37 silly install resolved     dist:
+37 silly install resolved      { shasum: '9214304f67aaef3484a49cdb817522807a5ea646',
+37 silly install resolved        tarball: 'http://registry.npmjs.org/rfidea/-/rfidea-0.0.2.tgz' },
+37 silly install resolved     _npmVersion: '1.1.65',
+37 silly install resolved     _npmUser: { name: 'jokesterfr', email: 'main@jokester.fr' },
+37 silly install resolved     maintainers: [ [Object] ],
+37 silly install resolved     _shasum: '9214304f67aaef3484a49cdb817522807a5ea646',
+37 silly install resolved     _resolved: 'https://registry.npmjs.org/rfidea/-/rfidea-0.0.2.tgz',
+37 silly install resolved     _from: 'rfidea@*',
+37 silly install resolved     bugs: { url: 'https://github.com/jokesterfr/rfidea/issues' },
+37 silly install resolved     homepage: 'https://github.com/jokesterfr/rfidea#readme' } ]
+38 info install rfidea@0.0.2 into /Users/virtica/Development/NodeJS
+39 info installOne rfidea@0.0.2
+40 verbose installOne of rfidea to /Users/virtica/Development/NodeJS not in flight; installing
+41 verbose lock using /Users/virtica/.npm/_locks/rfidea-2287e2ca449a9419.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea
+42 warn engine rfidea@0.0.2: wanted: {"node":"~0.8.0"} (current: {"node":"4.1.0","npm":"2.14.3"})
+43 silly install write writing rfidea 0.0.2 to /Users/virtica/Development/NodeJS/node_modules/rfidea
+44 verbose unbuild node_modules/rfidea
+45 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea is being purged from base /Users/virtica/Development/NodeJS
+46 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea
+47 verbose tar unpack /Users/virtica/.npm/rfidea/0.0.2/package.tgz
+48 verbose tar unpacking to /Users/virtica/Development/NodeJS/node_modules/rfidea
+49 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea is being purged
+50 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea
+51 silly gunzTarPerm modes [ '755', '644' ]
+52 silly gunzTarPerm extractEntry package.json
+53 silly gunzTarPerm extractEntry .npmignore
+54 silly gunzTarPerm extractEntry README.md
+55 silly gunzTarPerm extractEntry server.js
+56 silly gunzTarPerm extractEntry manage/getUID.js
+57 silly gunzTarPerm extractEntry manage/addDisc.js
+58 silly gunzTarPerm extractEntry manage/playAlbum.js
+59 silly gunzTarPerm extractEntry manage/restoreDB.sh
+60 silly gunzTarPerm extractEntry manage/backup/mongod.lock
+61 silly gunzTarPerm extractEntry manage/backup/rfidea/disco.bson
+62 silly gunzTarPerm extractEntry manage/backup/rfidea/disco.metadata.json
+63 silly gunzTarPerm extractEntry manage/backup/rfidea/disc.metadata.json
+64 silly gunzTarPerm extractEntry manage/backup/rfidea/disc.bson
+65 silly gunzTarPerm extractEntry manage/backupDB.sh
+66 silly gunzTarPerm extractEntry lib/database.js
+67 verbose write writing to /Users/virtica/Development/NodeJS/node_modules/rfidea/package.json
+68 info preinstall rfidea@0.0.2
+69 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/package.json
+70 silly prepareForInstallMany adding nfc@0.0.4 from rfidea dependencies
+71 silly prepareForInstallMany adding mongoskin@0.6.0 from rfidea dependencies
+72 silly prepareForInstallMany adding mpd@1.0.x from rfidea dependencies
+73 silly prepareForInstallMany adding commander@2.0.0 from rfidea dependencies
+74 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/package.json
+75 silly cache add args [ 'nfc@0.0.4', null ]
+76 verbose cache add spec nfc@0.0.4
+77 silly cache add args [ 'mongoskin@0.6.0', null ]
+78 verbose cache add spec mongoskin@0.6.0
+79 silly cache add parsed spec Result {
+79 silly cache add   raw: 'nfc@0.0.4',
+79 silly cache add   scope: null,
+79 silly cache add   name: 'nfc',
+79 silly cache add   rawSpec: '0.0.4',
+79 silly cache add   spec: '0.0.4',
+79 silly cache add   type: 'version' }
+80 silly addNamed nfc@0.0.4
+81 verbose addNamed "0.0.4" is a plain semver version for nfc
+82 silly mapToRegistry name nfc
+83 silly mapToRegistry using default registry
+84 silly mapToRegistry registry https://registry.npmjs.org/
+85 silly mapToRegistry uri https://registry.npmjs.org/nfc
+86 verbose addNameVersion registry:https://registry.npmjs.org/nfc not in flight; fetching
+87 silly cache add parsed spec Result {
+87 silly cache add   raw: 'mongoskin@0.6.0',
+87 silly cache add   scope: null,
+87 silly cache add   name: 'mongoskin',
+87 silly cache add   rawSpec: '0.6.0',
+87 silly cache add   spec: '0.6.0',
+87 silly cache add   type: 'version' }
+88 silly addNamed mongoskin@0.6.0
+89 verbose addNamed "0.6.0" is a plain semver version for mongoskin
+90 silly mapToRegistry name mongoskin
+91 silly mapToRegistry using default registry
+92 silly mapToRegistry registry https://registry.npmjs.org/
+93 silly mapToRegistry uri https://registry.npmjs.org/mongoskin
+94 verbose addNameVersion registry:https://registry.npmjs.org/mongoskin not in flight; fetching
+95 silly cache add args [ 'mpd@1.0.x', null ]
+96 verbose cache add spec mpd@1.0.x
+97 silly cache add parsed spec Result {
+97 silly cache add   raw: 'mpd@1.0.x',
+97 silly cache add   scope: null,
+97 silly cache add   name: 'mpd',
+97 silly cache add   rawSpec: '1.0.x',
+97 silly cache add   spec: '>=1.0.0 <1.1.0',
+97 silly cache add   type: 'range' }
+98 silly addNamed mpd@>=1.0.0 <1.1.0
+99 verbose addNamed ">=1.0.0 <1.1.0" is a valid semver range for mpd
+100 silly addNameRange { name: 'mpd', range: '>=1.0.0 <1.1.0', hasData: false }
+101 silly mapToRegistry name mpd
+102 silly mapToRegistry using default registry
+103 silly mapToRegistry registry https://registry.npmjs.org/
+104 silly mapToRegistry uri https://registry.npmjs.org/mpd
+105 verbose addNameRange registry:https://registry.npmjs.org/mpd not in flight; fetching
+106 silly cache add args [ 'commander@2.0.0', null ]
+107 verbose cache add spec commander@2.0.0
+108 silly cache add parsed spec Result {
+108 silly cache add   raw: 'commander@2.0.0',
+108 silly cache add   scope: null,
+108 silly cache add   name: 'commander',
+108 silly cache add   rawSpec: '2.0.0',
+108 silly cache add   spec: '2.0.0',
+108 silly cache add   type: 'version' }
+109 silly addNamed commander@2.0.0
+110 verbose addNamed "2.0.0" is a plain semver version for commander
+111 silly mapToRegistry name commander
+112 silly mapToRegistry using default registry
+113 silly mapToRegistry registry https://registry.npmjs.org/
+114 silly mapToRegistry uri https://registry.npmjs.org/commander
+115 verbose addNameVersion registry:https://registry.npmjs.org/commander not in flight; fetching
+116 verbose request uri https://registry.npmjs.org/nfc
+117 verbose request no auth needed
+118 info attempt registry request try #1 at 5:11:27 PM
+119 verbose etag "EK0NCH7U4O7PT9XZI0I9HA3YQ"
+120 http request GET https://registry.npmjs.org/nfc
+121 verbose request uri https://registry.npmjs.org/mpd
+122 verbose request no auth needed
+123 info attempt registry request try #1 at 5:11:27 PM
+124 verbose etag "9LH435IRW86ZK6R1MK0D9XOUA"
+125 http request GET https://registry.npmjs.org/mpd
+126 verbose request uri https://registry.npmjs.org/mongoskin
+127 verbose request no auth needed
+128 info attempt registry request try #1 at 5:11:27 PM
+129 verbose etag "25WWN9EXB4LFLMN8UPFHV6STB"
+130 http request GET https://registry.npmjs.org/mongoskin
+131 verbose request uri https://registry.npmjs.org/commander
+132 verbose request no auth needed
+133 info attempt registry request try #1 at 5:11:27 PM
+134 verbose etag "7R3NLMBK0RLU0SXDAZ6R6UVHB"
+135 http request GET https://registry.npmjs.org/commander
+136 http 304 https://registry.npmjs.org/nfc
+137 silly get cb [ 304,
+137 silly get   { date: 'Tue, 29 Sep 2015 22:11:27 GMT',
+137 silly get     via: '1.1 varnish',
+137 silly get     'cache-control': 'max-age=60',
+137 silly get     etag: '"EK0NCH7U4O7PT9XZI0I9HA3YQ"',
+137 silly get     age: '0',
+137 silly get     connection: 'keep-alive',
+137 silly get     'x-served-by': 'cache-iad2121-IAD',
+137 silly get     'x-cache': 'MISS',
+137 silly get     'x-cache-hits': '0',
+137 silly get     'x-timer': 'S1443564687.367239,VS0,VE18',
+137 silly get     vary: 'Accept' } ]
+138 verbose etag https://registry.npmjs.org/nfc from cache
+139 verbose get saving nfc to /Users/virtica/.npm/registry.npmjs.org/nfc/.cache.json
+140 silly cache afterAdd nfc@0.0.4
+141 verbose afterAdd /Users/virtica/.npm/nfc/0.0.4/package/package.json not in flight; writing
+142 verbose afterAdd /Users/virtica/.npm/nfc/0.0.4/package/package.json written
+143 http 304 https://registry.npmjs.org/mpd
+144 silly get cb [ 304,
+144 silly get   { date: 'Tue, 29 Sep 2015 22:11:27 GMT',
+144 silly get     via: '1.1 varnish',
+144 silly get     'cache-control': 'max-age=60',
+144 silly get     etag: '"9LH435IRW86ZK6R1MK0D9XOUA"',
+144 silly get     age: '0',
+144 silly get     connection: 'keep-alive',
+144 silly get     'x-served-by': 'cache-iad2122-IAD',
+144 silly get     'x-cache': 'MISS',
+144 silly get     'x-cache-hits': '0',
+144 silly get     'x-timer': 'S1443564687.376212,VS0,VE12',
+144 silly get     vary: 'Accept' } ]
+145 verbose etag https://registry.npmjs.org/mpd from cache
+146 verbose get saving mpd to /Users/virtica/.npm/registry.npmjs.org/mpd/.cache.json
+147 silly addNameRange number 2 { name: 'mpd', range: '>=1.0.0 <1.1.0', hasData: true }
+148 silly addNameRange versions [ 'mpd',
+148 silly addNameRange   [ '0.0.1',
+148 silly addNameRange     '0.2.0',
+148 silly addNameRange     '0.3.0',
+148 silly addNameRange     '0.3.1',
+148 silly addNameRange     '0.3.2',
+148 silly addNameRange     '0.3.3',
+148 silly addNameRange     '1.0.0',
+148 silly addNameRange     '1.0.1',
+148 silly addNameRange     '1.0.2',
+148 silly addNameRange     '1.0.3',
+148 silly addNameRange     '1.1.0',
+148 silly addNameRange     '1.2.0',
+148 silly addNameRange     '1.3.0' ] ]
+149 silly addNamed mpd@1.0.3
+150 verbose addNamed "1.0.3" is a plain semver version for mpd
+151 silly cache afterAdd mpd@1.0.3
+152 verbose afterAdd /Users/virtica/.npm/mpd/1.0.3/package/package.json not in flight; writing
+153 verbose afterAdd /Users/virtica/.npm/mpd/1.0.3/package/package.json written
+154 http 304 https://registry.npmjs.org/commander
+155 silly get cb [ 304,
+155 silly get   { date: 'Tue, 29 Sep 2015 22:11:27 GMT',
+155 silly get     via: '1.1 varnish',
+155 silly get     'cache-control': 'max-age=60',
+155 silly get     etag: '"7R3NLMBK0RLU0SXDAZ6R6UVHB"',
+155 silly get     age: '23',
+155 silly get     connection: 'keep-alive',
+155 silly get     'x-served-by': 'cache-iad2146-IAD',
+155 silly get     'x-cache': 'HIT',
+155 silly get     'x-cache-hits': '3',
+155 silly get     'x-timer': 'S1443564687.394487,VS0,VE0',
+155 silly get     vary: 'Accept' } ]
+156 verbose etag https://registry.npmjs.org/commander from cache
+157 verbose get saving commander to /Users/virtica/.npm/registry.npmjs.org/commander/.cache.json
+158 silly cache afterAdd commander@2.0.0
+159 verbose afterAdd /Users/virtica/.npm/commander/2.0.0/package/package.json not in flight; writing
+160 verbose afterAdd /Users/virtica/.npm/commander/2.0.0/package/package.json written
+161 http 304 https://registry.npmjs.org/mongoskin
+162 silly get cb [ 304,
+162 silly get   { date: 'Tue, 29 Sep 2015 22:11:27 GMT',
+162 silly get     via: '1.1 varnish',
+162 silly get     'cache-control': 'max-age=60',
+162 silly get     etag: '"25WWN9EXB4LFLMN8UPFHV6STB"',
+162 silly get     age: '0',
+162 silly get     connection: 'keep-alive',
+162 silly get     'x-served-by': 'cache-iad2125-IAD',
+162 silly get     'x-cache': 'HIT',
+162 silly get     'x-cache-hits': '1',
+162 silly get     'x-timer': 'S1443564687.374807,VS0,VE380',
+162 silly get     vary: 'Accept' } ]
+163 verbose etag https://registry.npmjs.org/mongoskin from cache
+164 verbose get saving mongoskin to /Users/virtica/.npm/registry.npmjs.org/mongoskin/.cache.json
+165 silly cache afterAdd mongoskin@0.6.0
+166 verbose afterAdd /Users/virtica/.npm/mongoskin/0.6.0/package/package.json not in flight; writing
+167 verbose afterAdd /Users/virtica/.npm/mongoskin/0.6.0/package/package.json written
+168 silly install resolved [ { name: 'nfc',
+168 silly install resolved     version: '0.0.4',
+168 silly install resolved     description: 'Node NFC functionallity through libnfc',
+168 silly install resolved     main: 'index.js',
+168 silly install resolved     scripts:
+168 silly install resolved      { test: 'echo "Error: no test specified" && exit 1',
+168 silly install resolved        install: 'node-gyp rebuild' },
+168 silly install resolved     repository:
+168 silly install resolved      { type: 'git',
+168 silly install resolved        url: 'git+https://github.com/Camme/node-nfc.git' },
+168 silly install resolved     keywords: [ 'nfc' ],
+168 silly install resolved     author: { name: 'Camilo Tapia', email: 'camilo.tapia@gmail.com' },
+168 silly install resolved     license: 'MIT',
+168 silly install resolved     gypfile: true,
+168 silly install resolved     _id: 'nfc@0.0.4',
+168 silly install resolved     dist:
+168 silly install resolved      { shasum: 'dd7a98291dc7a6753d50b95aa5f2cda810cb78a9',
+168 silly install resolved        tarball: 'http://registry.npmjs.org/nfc/-/nfc-0.0.4.tgz' },
+168 silly install resolved     maintainers: [ [Object] ],
+168 silly install resolved     directories: {},
+168 silly install resolved     _shasum: 'dd7a98291dc7a6753d50b95aa5f2cda810cb78a9',
+168 silly install resolved     _resolved: 'https://registry.npmjs.org/nfc/-/nfc-0.0.4.tgz',
+168 silly install resolved     _from: 'nfc@0.0.4',
+168 silly install resolved     bugs: { url: 'https://github.com/Camme/node-nfc/issues' },
+168 silly install resolved     readme: 'ERROR: No README data found!',
+168 silly install resolved     homepage: 'https://github.com/Camme/node-nfc#readme' },
+168 silly install resolved   { name: 'mpd',
+168 silly install resolved     version: '1.0.3',
+168 silly install resolved     description: 'music player daemon client',
+168 silly install resolved     main: 'index.js',
+168 silly install resolved     engines: { node: '>=0.8.0' },
+168 silly install resolved     repository:
+168 silly install resolved      { type: 'git',
+168 silly install resolved        url: 'git+ssh://git@github.com/superjoe30/mpd.js.git' },
+168 silly install resolved     keywords: [ 'mpd', 'music', 'player', 'daemon', 'client', 'protocol' ],
+168 silly install resolved     author: { name: 'Andrew Kelley', email: 'superjoe30@gmail.com' },
+168 silly install resolved     license: 'MIT',
+168 silly install resolved     bugs: { url: 'https://github.com/superjoe30/mpd.js/issues' },
+168 silly install resolved     _id: 'mpd@1.0.3',
+168 silly install resolved     dist:
+168 silly install resolved      { shasum: 'eab52888d82075d8fc259bda278caa78641bff6e',
+168 silly install resolved        tarball: 'http://registry.npmjs.org/mpd/-/mpd-1.0.3.tgz' },
+168 silly install resolved     _from: 'mpd@>=1.0.0 <1.1.0',
+168 silly install resolved     _npmVersion: '1.3.10',
+168 silly install resolved     _npmUser: { name: 'superjoe', email: 'superjoe30@gmail.com' },
+168 silly install resolved     maintainers: [ [Object] ],
+168 silly install resolved     directories: {},
+168 silly install resolved     _shasum: 'eab52888d82075d8fc259bda278caa78641bff6e',
+168 silly install resolved     _resolved: 'https://registry.npmjs.org/mpd/-/mpd-1.0.3.tgz',
+168 silly install resolved     readme: 'ERROR: No README data found!',
+168 silly install resolved     homepage: 'https://github.com/superjoe30/mpd.js#readme' },
+168 silly install resolved   { name: 'commander',
+168 silly install resolved     version: '2.0.0',
+168 silly install resolved     description: 'the complete solution for node.js command-line programs',
+168 silly install resolved     keywords: [ 'command', 'option', 'parser', 'prompt', 'stdin' ],
+168 silly install resolved     author: { name: 'TJ Holowaychuk', email: 'tj@vision-media.ca' },
+168 silly install resolved     repository:
+168 silly install resolved      { type: 'git',
+168 silly install resolved        url: 'git+https://github.com/visionmedia/commander.js.git' },
+168 silly install resolved     devDependencies: { should: '>= 0.0.1' },
+168 silly install resolved     scripts: { test: 'make test' },
+168 silly install resolved     main: 'index',
+168 silly install resolved     engines: { node: '>= 0.6.x' },
+168 silly install resolved     bugs: { url: 'https://github.com/visionmedia/commander.js/issues' },
+168 silly install resolved     _id: 'commander@2.0.0',
+168 silly install resolved     dist:
+168 silly install resolved      { shasum: 'd1b86f901f8b64bd941bdeadaf924530393be928',
+168 silly install resolved        tarball: 'http://registry.npmjs.org/commander/-/commander-2.0.0.tgz' },
+168 silly install resolved     _from: 'commander@2.0.0',
+168 silly install resolved     _npmVersion: '1.2.25',
+168 silly install resolved     _npmUser: { name: 'tjholowaychuk', email: 'tj@vision-media.ca' },
+168 silly install resolved     maintainers: [ [Object] ],
+168 silly install resolved     directories: {},
+168 silly install resolved     _shasum: 'd1b86f901f8b64bd941bdeadaf924530393be928',
+168 silly install resolved     _resolved: 'https://registry.npmjs.org/commander/-/commander-2.0.0.tgz',
+168 silly install resolved     readme: 'ERROR: No README data found!',
+168 silly install resolved     homepage: 'https://github.com/visionmedia/commander.js#readme' },
+168 silly install resolved   { name: 'mongoskin',
+168 silly install resolved     description: 'The future layer above node-mongodb-native',
+168 silly install resolved     version: '0.6.0',
+168 silly install resolved     author: { name: 'Gui Lin', email: 'guileen@gmail.com' },
+168 silly install resolved     homepage: 'https://github.com/kissjs/node-mongoskin',
+168 silly install resolved     repository:
+168 silly install resolved      { type: 'git',
+168 silly install resolved        url: 'git://github.com/kissjs/node-mongoskin.git' },
+168 silly install resolved     bugs: { url: 'https://github.com/kissjs/node-mongoskin/issues' },
+168 silly install resolved     main: './index.js',
+168 silly install resolved     keywords: [ 'mongodb', 'database', 'nosql' ],
+168 silly install resolved     engines: { node: '>= 0.4.0' },
+168 silly install resolved     dependencies: { mongodb: '1.3.x' },
+168 silly install resolved     devDependencies: { mocha: '*', jscover: '*', should: '*' },
+168 silly install resolved     scripts: { test: 'make test' },
+168 silly install resolved     directories: { example: './examples', lib: './lib/mongoskin' },
+168 silly install resolved     license: 'MIT',
+168 silly install resolved     contributors:
+168 silly install resolved      [ [Object],
+168 silly install resolved        [Object],
+168 silly install resolved        [Object],
+168 silly install resolved        [Object],
+168 silly install resolved        [Object],
+168 silly install resolved        [Object],
+168 silly install resolved        [Object],
+168 silly install resolved        [Object],
+168 silly install resolved        [Object],
+168 silly install resolved        [Object],
+168 silly install resolved        [Object],
+168 silly install resolved        [Object] ],
+168 silly install resolved     _id: 'mongoskin@0.6.0',
+168 silly install resolved     dist:
+168 silly install resolved      { shasum: 'c2556af3c992437f235765e083f571f9d22331ab',
+168 silly install resolved        tarball: 'http://registry.npmjs.org/mongoskin/-/mongoskin-0.6.0.tgz' },
+168 silly install resolved     _from: 'mongoskin@0.6.0',
+168 silly install resolved     _npmVersion: '1.3.2',
+168 silly install resolved     _npmUser: { name: 'fengmk2', email: 'fengmk2@gmail.com' },
+168 silly install resolved     maintainers: [ [Object], [Object] ],
+168 silly install resolved     _shasum: 'c2556af3c992437f235765e083f571f9d22331ab',
+168 silly install resolved     _resolved: 'https://registry.npmjs.org/mongoskin/-/mongoskin-0.6.0.tgz',
+168 silly install resolved     readme: 'ERROR: No README data found!' } ]
+169 info install nfc@0.0.4 into /Users/virtica/Development/NodeJS/node_modules/rfidea
+170 info install mpd@1.0.3 into /Users/virtica/Development/NodeJS/node_modules/rfidea
+171 info install commander@2.0.0 into /Users/virtica/Development/NodeJS/node_modules/rfidea
+172 info install mongoskin@0.6.0 into /Users/virtica/Development/NodeJS/node_modules/rfidea
+173 info installOne nfc@0.0.4
+174 verbose installOne of nfc to /Users/virtica/Development/NodeJS/node_modules/rfidea not in flight; installing
+175 info installOne mpd@1.0.3
+176 verbose installOne of mpd to /Users/virtica/Development/NodeJS/node_modules/rfidea not in flight; installing
+177 info installOne commander@2.0.0
+178 verbose installOne of commander to /Users/virtica/Development/NodeJS/node_modules/rfidea not in flight; installing
+179 info installOne mongoskin@0.6.0
+180 verbose installOne of mongoskin to /Users/virtica/Development/NodeJS/node_modules/rfidea not in flight; installing
+181 verbose lock using /Users/virtica/.npm/_locks/nfc-dfe8b1bb2c728e8c.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc
+182 verbose lock using /Users/virtica/.npm/_locks/mpd-4f229bef14e458b2.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd
+183 silly install write writing nfc 0.0.4 to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc
+184 silly install write writing mpd 1.0.3 to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd
+185 verbose lock using /Users/virtica/.npm/_locks/commander-0615ebe9e0680a46.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander
+186 verbose lock using /Users/virtica/.npm/_locks/mongoskin-9f3a0b64445ead03.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin
+187 silly install write writing commander 2.0.0 to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander
+188 silly install write writing mongoskin 0.6.0 to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin
+189 verbose unbuild node_modules/rfidea/node_modules/mpd
+190 verbose unbuild node_modules/rfidea/node_modules/nfc
+191 verbose unbuild node_modules/rfidea/node_modules/commander
+192 verbose unbuild node_modules/rfidea/node_modules/mongoskin
+193 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd is being purged from base /Users/virtica/Development/NodeJS
+194 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd
+195 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc is being purged from base /Users/virtica/Development/NodeJS
+196 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc
+197 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander is being purged from base /Users/virtica/Development/NodeJS
+198 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander
+199 verbose tar unpack /Users/virtica/.npm/mpd/1.0.3/package.tgz
+200 verbose tar unpacking to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd
+201 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd is being purged
+202 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd
+203 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin is being purged from base /Users/virtica/Development/NodeJS
+204 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin
+205 verbose tar unpack /Users/virtica/.npm/nfc/0.0.4/package.tgz
+206 verbose tar unpacking to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc
+207 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc is being purged
+208 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc
+209 verbose tar unpack /Users/virtica/.npm/commander/2.0.0/package.tgz
+210 verbose tar unpacking to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander
+211 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander is being purged
+212 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander
+213 silly gunzTarPerm modes [ '755', '644' ]
+214 verbose tar unpack /Users/virtica/.npm/mongoskin/0.6.0/package.tgz
+215 verbose tar unpacking to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin
+216 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin is being purged
+217 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin
+218 silly gunzTarPerm modes [ '755', '644' ]
+219 silly gunzTarPerm modes [ '755', '644' ]
+220 silly gunzTarPerm modes [ '755', '644' ]
+221 silly gunzTarPerm extractEntry package.json
+222 silly gunzTarPerm extractEntry package.json
+223 silly gunzTarPerm extractEntry package.json
+224 silly gunzTarPerm extractEntry package.json
+225 silly gunzTarPerm extractEntry .npmignore
+226 silly gunzTarPerm extractEntry README.md
+227 silly gunzTarPerm extractEntry .npmignore
+228 silly gunzTarPerm extractEntry README.md
+229 silly gunzTarPerm extractEntry index.js
+230 silly gunzTarPerm extractEntry History.md
+231 silly gunzTarPerm extractEntry Readme.md
+232 silly gunzTarPerm extractEntry .npmignore
+233 silly gunzTarPerm extractEntry LICENSE
+234 silly gunzTarPerm extractEntry LICENSE
+235 silly gunzTarPerm extractEntry index.js
+236 silly gunzTarPerm extractEntry index.js
+237 silly gunzTarPerm extractEntry test.js
+238 silly gunzTarPerm extractEntry index.js
+239 silly gunzTarPerm extractEntry History.md
+240 silly gunzTarPerm extractEntry examples/nowplaying.js
+241 silly gunzTarPerm extractEntry binding.gyp
+242 silly gunzTarPerm extractEntry src/nfc.cc
+243 silly gunzTarPerm extractEntry .jshintrc
+244 silly gunzTarPerm extractEntry Makefile
+245 silly gunzTarPerm extractEntry temp.c
+246 silly gunzTarPerm extractEntry .travis.yml
+247 silly gunzTarPerm extractEntry examples/admin.js
+248 silly gunzTarPerm extractEntry examples/close.js
+249 silly gunzTarPerm extractEntry examples/config.js
+250 verbose write writing to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander/package.json
+251 silly gunzTarPerm extractEntry examples/generateId.js
+252 silly gunzTarPerm extractEntry examples/gridfs.js
+253 info preinstall commander@2.0.0
+254 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander/package.json
+255 silly gunzTarPerm extractEntry examples/insert.js
+256 silly gunzTarPerm extractEntry examples/replSetBenchmark.js
+257 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander/package.json
+258 verbose write writing to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd/package.json
+259 silly install resolved []
+260 verbose about to build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander
+261 info build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander
+262 silly gunzTarPerm extractEntry examples/replset.js
+263 silly gunzTarPerm extractEntry examples/update.js
+264 info preinstall mpd@1.0.3
+265 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd/package.json
+266 info linkStuff commander@2.0.0
+267 silly linkStuff commander@2.0.0 has /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules as its parent node_modules
+268 silly gunzTarPerm extractEntry AUTHORS
+269 silly gunzTarPerm extractEntry integration/integration_tests.js
+270 verbose linkBins commander@2.0.0
+271 verbose linkMans commander@2.0.0
+272 verbose rebuildBundles commander@2.0.0
+273 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd/package.json
+274 info install commander@2.0.0
+275 verbose write writing to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc/package.json
+276 info postinstall commander@2.0.0
+277 info preinstall nfc@0.0.4
+278 verbose unlock done using /Users/virtica/.npm/_locks/commander-0615ebe9e0680a46.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/commander
+279 silly install resolved []
+280 verbose about to build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd
+281 info build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd
+282 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc/package.json
+283 silly gunzTarPerm extractEntry integration/longlive.js
+284 silly gunzTarPerm extractEntry lib/mongoskin/admin.js
+285 info linkStuff mpd@1.0.3
+286 silly linkStuff mpd@1.0.3 has /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules as its parent node_modules
+287 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc/package.json
+288 verbose linkBins mpd@1.0.3
+289 verbose linkMans mpd@1.0.3
+290 verbose rebuildBundles mpd@1.0.3
+291 info install mpd@1.0.3
+292 silly gunzTarPerm extractEntry lib/mongoskin/collection.js
+293 silly gunzTarPerm extractEntry lib/mongoskin/constant.js
+294 info postinstall mpd@1.0.3
+295 silly install resolved []
+296 verbose about to build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc
+297 info build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc
+298 verbose unlock done using /Users/virtica/.npm/_locks/mpd-4f229bef14e458b2.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mpd
+299 info linkStuff nfc@0.0.4
+300 silly linkStuff nfc@0.0.4 has /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules as its parent node_modules
+301 silly gunzTarPerm extractEntry lib/mongoskin/cursor.js
+302 silly gunzTarPerm extractEntry lib/mongoskin/db.js
+303 verbose linkBins nfc@0.0.4
+304 verbose linkMans nfc@0.0.4
+305 verbose rebuildBundles nfc@0.0.4
+306 info install nfc@0.0.4
+307 verbose unsafe-perm in lifecycle false
+308 silly gunzTarPerm extractEntry lib/mongoskin/gridfs.js
+309 silly gunzTarPerm extractEntry lib/mongoskin/index.js
+310 silly gunzTarPerm extractEntry lib/mongoskin/router.js
+311 silly gunzTarPerm extractEntry lib/mongoskin/server.js
+312 silly gunzTarPerm extractEntry lib/mongoskin/utils.js
+313 silly gunzTarPerm extractEntry logo.png
+314 silly gunzTarPerm extractEntry Readme.md
+315 verbose write writing to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/package.json
+316 info preinstall mongoskin@0.6.0
+317 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/package.json
+318 silly prepareForInstallMany adding mongodb@1.3.x from mongoskin dependencies
+319 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/package.json
+320 silly cache add args [ 'mongodb@1.3.x', null ]
+321 verbose cache add spec mongodb@1.3.x
+322 silly cache add parsed spec Result {
+322 silly cache add   raw: 'mongodb@1.3.x',
+322 silly cache add   scope: null,
+322 silly cache add   name: 'mongodb',
+322 silly cache add   rawSpec: '1.3.x',
+322 silly cache add   spec: '>=1.3.0 <1.4.0',
+322 silly cache add   type: 'range' }
+323 silly addNamed mongodb@>=1.3.0 <1.4.0
+324 verbose addNamed ">=1.3.0 <1.4.0" is a valid semver range for mongodb
+325 silly addNameRange { name: 'mongodb', range: '>=1.3.0 <1.4.0', hasData: false }
+326 silly mapToRegistry name mongodb
+327 silly mapToRegistry using default registry
+328 silly mapToRegistry registry https://registry.npmjs.org/
+329 silly mapToRegistry uri https://registry.npmjs.org/mongodb
+330 verbose addNameRange registry:https://registry.npmjs.org/mongodb not in flight; fetching
+331 verbose request uri https://registry.npmjs.org/mongodb
+332 verbose request no auth needed
+333 info attempt registry request try #1 at 5:11:28 PM
+334 verbose etag "5FO6U0354WNET51CCHKP645VK"
+335 http request GET https://registry.npmjs.org/mongodb
+336 http 304 https://registry.npmjs.org/mongodb
+337 silly get cb [ 304,
+337 silly get   { date: 'Tue, 29 Sep 2015 22:11:28 GMT',
+337 silly get     via: '1.1 varnish',
+337 silly get     'cache-control': 'max-age=60',
+337 silly get     etag: '"5FO6U0354WNET51CCHKP645VK"',
+337 silly get     age: '9',
+337 silly get     connection: 'keep-alive',
+337 silly get     'x-served-by': 'cache-iad2123-IAD',
+337 silly get     'x-cache': 'HIT',
+337 silly get     'x-cache-hits': '1',
+337 silly get     'x-timer': 'S1443564688.164165,VS0,VE3',
+337 silly get     vary: 'Accept' } ]
+338 verbose etag https://registry.npmjs.org/mongodb from cache
+339 verbose get saving mongodb to /Users/virtica/.npm/registry.npmjs.org/mongodb/.cache.json
+340 silly addNameRange number 2 { name: 'mongodb', range: '>=1.3.0 <1.4.0', hasData: true }
+341 silly addNameRange versions [ 'mongodb',
+341 silly addNameRange   [ '0.9.4',
+341 silly addNameRange     '0.9.4-4',
+341 silly addNameRange     '0.9.3',
+341 silly addNameRange     '0.9.1',
+341 silly addNameRange     '0.9.2',
+341 silly addNameRange     '0.9.6-7',
+341 silly addNameRange     '0.9.6-8',
+341 silly addNameRange     '0.9.6-9',
+341 silly addNameRange     '0.9.6-10',
+341 silly addNameRange     '0.9.6-11',
+341 silly addNameRange     '0.9.6-12',
+341 silly addNameRange     '0.9.6-13',
+341 silly addNameRange     '0.9.6-14',
+341 silly addNameRange     '0.9.6-15',
+341 silly addNameRange     '0.9.6-16',
+341 silly addNameRange     '0.9.6-17',
+341 silly addNameRange     '0.9.6-18',
+341 silly addNameRange     '0.9.6-19',
+341 silly addNameRange     '0.9.6-20',
+341 silly addNameRange     '0.9.6-21',
+341 silly addNameRange     '0.9.6-22',
+341 silly addNameRange     '0.9.6-23',
+341 silly addNameRange     '0.9.7',
+341 silly addNameRange     '0.9.7-0',
+341 silly addNameRange     '0.9.7-1',
+341 silly addNameRange     '0.9.7-1.1',
+341 silly addNameRange     '0.9.7-1.2',
+341 silly addNameRange     '0.9.7-1.3',
+341 silly addNameRange     '0.9.7-1.4',
+341 silly addNameRange     '0.9.7-2',
+341 silly addNameRange     '0.9.7-2-1',
+341 silly addNameRange     '0.9.7-2-2',
+341 silly addNameRange     '0.9.7-2-3',
+341 silly addNameRange     '0.9.7-2-4',
+341 silly addNameRange     '0.9.7-2-5',
+341 silly addNameRange     '0.9.7-3',
+341 silly addNameRange     '0.9.7-3-1',
+341 silly addNameRange     '0.9.7-3-2',
+341 silly addNameRange     '0.9.7-3-3',
+341 silly addNameRange     '0.9.7-3-4',
+341 silly addNameRange     '0.9.7-3-5',
+341 silly addNameRange     '0.9.8',
+341 silly addNameRange     '0.9.8-1',
+341 silly addNameRange     '0.9.8-2',
+341 silly addNameRange     '0.9.8-3',
+341 silly addNameRange     '0.9.8-4',
+341 silly addNameRange     '0.9.8-5',
+341 silly addNameRange     '0.9.8-6',
+341 silly addNameRange     '0.9.8-7',
+341 silly addNameRange     '0.9.9',
+341 silly addNameRange     '0.9.9-1',
+341 silly addNameRange     '0.9.9-2',
+341 silly addNameRange     '0.9.9-3',
+341 silly addNameRange     '0.9.9-4',
+341 silly addNameRange     '0.9.9-5',
+341 silly addNameRange     '0.9.9-6',
+341 silly addNameRange     '0.9.9-7',
+341 silly addNameRange     '0.9.9-8',
+341 silly addNameRange     '1.0.0',
+341 silly addNameRange     '1.0.1',
+341 silly addNameRange     '1.0.2',
+341 silly addNameRange     '1.1.0-beta',
+341 silly addNameRange     '1.1.0',
+341 silly addNameRange     '1.1.1',
+341 silly addNameRange     '1.1.2',
+341 silly addNameRange     '1.1.3',
+341 silly addNameRange     '1.1.4',
+341 silly addNameRange     '1.1.5',
+341 silly addNameRange     '1.1.6',
+341 silly addNameRange     '1.1.7',
+341 silly addNameRange     '1.1.8',
+341 silly addNameRange     '1.1.9',
+341 silly addNameRange     '1.1.10',
+341 silly addNameRange     '1.1.11',
+341 silly addNameRange     '1.2.0',
+341 silly addNameRange     '1.2.1',
+341 silly addNameRange     '1.2.2',
+341 silly addNameRange     '1.2.3',
+341 silly addNameRange     '1.2.4',
+341 silly addNameRange     '1.2.5',
+341 silly addNameRange     '1.2.6',
+341 silly addNameRange     '1.2.7',
+341 silly addNameRange     '1.2.8',
+341 silly addNameRange     '1.2.9',
+341 silly addNameRange     '1.2.10',
+341 silly addNameRange     '1.2.11',
+341 silly addNameRange     '1.2.12',
+341 silly addNameRange     '1.2.13',
+341 silly addNameRange     '1.2.14',
+341 silly addNameRange     '1.3.0',
+341 silly addNameRange     '1.3.1',
+341 silly addNameRange     '1.3.2',
+341 silly addNameRange     '1.3.3',
+341 silly addNameRange     '1.3.4',
+341 silly addNameRange     '1.3.5',
+341 silly addNameRange     '1.3.6',
+341 silly addNameRange     '1.3.7',
+341 silly addNameRange     '1.3.8',
+341 silly addNameRange     '1.3.9',
+341 silly addNameRange     '1.3.10',
+341 silly addNameRange     '1.3.11',
+341 silly addNameRange     '1.3.12',
+341 silly addNameRange     '1.3.14',
+341 silly addNameRange     '1.3.15',
+341 silly addNameRange     '1.3.17',
+341 silly addNameRange     '1.3.18',
+341 silly addNameRange     '1.3.19',
+341 silly addNameRange     '1.4.0-rc2',
+341 silly addNameRange     '1.3.20',
+341 silly addNameRange     '1.4.0-rc3',
+341 silly addNameRange     '1.3.21',
+341 silly addNameRange     '1.3.22',
+341 silly addNameRange     '1.3.23',
+341 silly addNameRange     '1.4.0-rc4',
+341 silly addNameRange     '1.4.0-rc5',
+341 silly addNameRange     '1.4.0-rc6',
+341 silly addNameRange     '1.4.0-rc7',
+341 silly addNameRange     '1.4.0-rc8',
+341 silly addNameRange     '1.4.0-rc9',
+341 silly addNameRange     '1.4.0-rc10',
+341 silly addNameRange     '1.4.0',
+341 silly addNameRange     '1.4.1',
+341 silly addNameRange     '1.4.2',
+341 silly addNameRange     '1.4.3',
+341 silly addNameRange     '1.4.4',
+341 silly addNameRange     '1.4.5',
+341 silly addNameRange     '1.4.6',
+341 silly addNameRange     '1.4.7',
+341 silly addNameRange     '1.4.8',
+341 silly addNameRange     '1.4.9',
+341 silly addNameRange     '1.4.10',
+341 silly addNameRange     '2.0.0-alpha1',
+341 silly addNameRange     '1.4.11',
+341 silly addNameRange     '1.4.12',
+341 silly addNameRange     '1.4.14',
+341 silly addNameRange     '1.4.15',
+341 silly addNameRange     '1.4.16',
+341 silly addNameRange     '1.4.17',
+341 silly addNameRange     '2.0.0-alpha2',
+341 silly addNameRange     '1.4.18',
+341 silly addNameRange     '2.0.0',
+341 silly addNameRange     '2.0.1',
+341 silly addNameRange     '2.0.2',
+341 silly addNameRange     '1.4.19',
+341 silly addNameRange     '2.0.3',
+341 silly addNameRange     '2.0.4',
+341 silly addNameRange     '2.0.5',
+341 silly addNameRange     '2.0.6',
+341 silly addNameRange     '1.4.20',
+341 silly addNameRange     '1.4.22',
+341 silly addNameRange     '2.0.7',
+341 silly addNameRange     '2.0.8',
+341 silly addNameRange     '2.0.9',
+341 silly addNameRange     '1.4.23',
+341 silly addNameRange     '2.0.10',
+341 silly addNameRange     '1.4.24',
+341 silly addNameRange     '2.0.11',
+341 silly addNameRange     '1.4.25',
+341 silly addNameRange     '2.0.12',
+341 silly addNameRange     '1.4.26',
+341 silly addNameRange     '1.4.27',
+341 silly addNameRange     '1.4.28',
+341 silly addNameRange     '2.0.13',
+341 silly addNameRange     '2.0.14',
+341 silly addNameRange     '1.4.29',
+341 silly addNameRange     '2.0.15',
+341 silly addNameRange     '1.4.30',
+341 silly addNameRange     '2.0.16',
+341 silly addNameRange     '1.4.31',
+341 silly addNameRange     '2.0.17',
+341 silly addNameRange     '1.4.32',
+341 silly addNameRange     '2.0.18',
+341 silly addNameRange     '2.0.19',
+341 silly addNameRange     '1.4.33',
+341 silly addNameRange     '2.0.20',
+341 silly addNameRange     '2.0.21',
+341 silly addNameRange     '1.4.34',
+341 silly addNameRange     '2.0.22',
+341 silly addNameRange     '2.0.23',
+341 silly addNameRange     '1.4.35',
+341 silly addNameRange     '2.0.24',
+341 silly addNameRange     '2.0.25',
+341 silly addNameRange     '2.0.26',
+341 silly addNameRange     '2.0.27',
+341 silly addNameRange     '2.0.28',
+341 silly addNameRange     '2.0.29',
+341 silly addNameRange     '1.4.36',
+341 silly addNameRange     '2.0.30',
+341 silly addNameRange     '1.4.37',
+341 silly addNameRange     '2.0.31',
+341 silly addNameRange     '1.4.38',
+341 silly addNameRange     '2.0.32',
+341 silly addNameRange     '2.0.33',
+341 silly addNameRange     '2.1.0-alpha',
+341 silly addNameRange     '2.0.34',
+341 silly addNameRange     '2.0.35',
+341 silly addNameRange     '2.0.36',
+341 silly addNameRange     '2.0.37',
+341 silly addNameRange     '2.0.38',
+341 silly addNameRange     '2.0.39',
+341 silly addNameRange     '1.4.39',
+341 silly addNameRange     '2.0.40',
+341 silly addNameRange     '2.0.41',
+341 silly addNameRange     '2.0.42',
+341 silly addNameRange     '2.0.43',
+341 silly addNameRange     '2.0.44' ] ]
+342 silly addNamed mongodb@1.3.23
+343 verbose addNamed "1.3.23" is a plain semver version for mongodb
+344 silly cache afterAdd mongodb@1.3.23
+345 verbose afterAdd /Users/virtica/.npm/mongodb/1.3.23/package/package.json not in flight; writing
+346 verbose afterAdd /Users/virtica/.npm/mongodb/1.3.23/package/package.json written
+347 silly install resolved [ { name: 'mongodb',
+347 silly install resolved     description: 'A node.js driver for MongoDB',
+347 silly install resolved     keywords: [ 'mongodb', 'mongo', 'driver', 'db' ],
+347 silly install resolved     version: '1.3.23',
+347 silly install resolved     author: { name: 'Christian Amor Kvalheim', email: 'christkv@gmail.com' },
+347 silly install resolved     contributors:
+347 silly install resolved      [ [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object],
+347 silly install resolved        [Object] ],
+347 silly install resolved     repository:
+347 silly install resolved      { type: 'git',
+347 silly install resolved        url: 'git+ssh://git@github.com/mongodb/node-mongodb-native.git' },
+347 silly install resolved     bugs: { url: 'http://github.com/mongodb/node-mongodb-native/issues' },
+347 silly install resolved     dependencies: { bson: '0.2.5', kerberos: '0.0.3' },
+347 silly install resolved     devDependencies:
+347 silly install resolved      { dox: '0.4.4',
+347 silly install resolved        'uglify-js': '1.2.5',
+347 silly install resolved        ejs: '0.6.1',
+347 silly install resolved        request: '2.12.0',
+347 silly install resolved        nodeunit: '0.7.4',
+347 silly install resolved        markdown: '0.3.1',
+347 silly install resolved        gleak: '0.2.3',
+347 silly install resolved        step: '0.0.5',
+347 silly install resolved        async: '0.1.22',
+347 silly install resolved        integra: 'latest',
+347 silly install resolved        optimist: 'latest' },
+347 silly install resolved     optionalDependencies: { kerberos: '0.0.3' },
+347 silly install resolved     config: { native: false },
+347 silly install resolved     main: './lib/mongodb/index',
+347 silly install resolved     homepage: 'http://mongodb.github.com/node-mongodb-native/',
+347 silly install resolved     directories: { lib: './lib/mongodb' },
+347 silly install resolved     engines: { node: '>=0.6.19' },
+347 silly install resolved     scripts: { test: 'make test_functional' },
+347 silly install resolved     licenses: [ [Object] ],
+347 silly install resolved     _id: 'mongodb@1.3.23',
+347 silly install resolved     dist:
+347 silly install resolved      { shasum: '874a5212162b16188aeeaee5e06067766c8e9e86',
+347 silly install resolved        tarball: 'http://registry.npmjs.org/mongodb/-/mongodb-1.3.23.tgz' },
+347 silly install resolved     _from: 'mongodb@>=1.3.0 <1.4.0',
+347 silly install resolved     _npmVersion: '1.3.5',
+347 silly install resolved     _npmUser: { name: 'christkv', email: 'christkv@gmail.com' },
+347 silly install resolved     maintainers: [ [Object] ],
+347 silly install resolved     _shasum: '874a5212162b16188aeeaee5e06067766c8e9e86',
+347 silly install resolved     _resolved: 'https://registry.npmjs.org/mongodb/-/mongodb-1.3.23.tgz',
+347 silly install resolved     readme: 'ERROR: No README data found!' } ]
+348 info install mongodb@1.3.23 into /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin
+349 info installOne mongodb@1.3.23
+350 verbose installOne of mongodb to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin not in flight; installing
+351 verbose lock using /Users/virtica/.npm/_locks/mongodb-f6055859725796f9.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+352 silly install write writing mongodb 1.3.23 to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+353 verbose unbuild node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+354 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb is being purged from base /Users/virtica/Development/NodeJS
+355 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+356 verbose tar unpack /Users/virtica/.npm/mongodb/1.3.23/package.tgz
+357 verbose tar unpacking to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+358 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb is being purged
+359 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+360 silly gunzTarPerm modes [ '755', '644' ]
+361 silly gunzTarPerm extractEntry package.json
+362 silly gunzTarPerm extractEntry LICENSE
+363 silly gunzTarPerm extractEntry index.js
+364 silly gunzTarPerm extractEntry t.js
+365 silly gunzTarPerm extractEntry .travis.yml
+366 silly gunzTarPerm extractEntry CONTRIBUTING.md
+367 silly gunzTarPerm extractEntry Makefile
+368 silly gunzTarPerm extractEntry Readme.md
+369 silly gunzTarPerm extractEntry lib/mongodb/admin.js
+370 silly gunzTarPerm extractEntry lib/mongodb/scope.js
+371 silly gunzTarPerm extractEntry lib/mongodb/mongo_client.js
+372 silly gunzTarPerm extractEntry lib/mongodb/collection.js
+373 silly gunzTarPerm extractEntry lib/mongodb/command_cursor.js
+374 silly gunzTarPerm extractEntry lib/mongodb/index.js
+375 silly gunzTarPerm extractEntry lib/mongodb/db.js
+376 silly gunzTarPerm extractEntry lib/mongodb/aggregation_cursor.js
+377 silly gunzTarPerm extractEntry lib/mongodb/cursorstream.js
+378 silly gunzTarPerm extractEntry lib/mongodb/utils.js
+379 silly gunzTarPerm extractEntry lib/mongodb/cursor.js
+380 silly gunzTarPerm extractEntry lib/mongodb/connection/base.js
+381 silly gunzTarPerm extractEntry lib/mongodb/connection/connection.js
+382 silly gunzTarPerm extractEntry lib/mongodb/connection/connection_pool.js
+383 silly gunzTarPerm extractEntry lib/mongodb/connection/connection_utils.js
+384 silly gunzTarPerm extractEntry lib/mongodb/connection/mongos.js
+385 silly gunzTarPerm extractEntry lib/mongodb/connection/read_preference.js
+386 silly gunzTarPerm extractEntry lib/mongodb/connection/server.js
+387 silly gunzTarPerm extractEntry lib/mongodb/connection/server_capabilities.js
+388 silly gunzTarPerm extractEntry lib/mongodb/connection/url_parser.js
+389 silly gunzTarPerm extractEntry lib/mongodb/connection/repl_set/ha.js
+390 silly gunzTarPerm extractEntry lib/mongodb/connection/repl_set/options.js
+391 silly gunzTarPerm extractEntry lib/mongodb/connection/repl_set/repl_set.js
+392 silly gunzTarPerm extractEntry lib/mongodb/connection/repl_set/repl_set_state.js
+393 silly gunzTarPerm extractEntry lib/mongodb/connection/repl_set/strategies/ping_strategy.js
+394 silly gunzTarPerm extractEntry lib/mongodb/connection/repl_set/strategies/statistics_strategy.js
+395 silly gunzTarPerm extractEntry lib/mongodb/gridfs/chunk.js
+396 silly gunzTarPerm extractEntry lib/mongodb/gridfs/grid.js
+397 silly gunzTarPerm extractEntry lib/mongodb/gridfs/gridstore.js
+398 silly gunzTarPerm extractEntry lib/mongodb/gridfs/readstream.js
+399 silly gunzTarPerm extractEntry lib/mongodb/commands/base_command.js
+400 silly gunzTarPerm extractEntry lib/mongodb/commands/db_command.js
+401 silly gunzTarPerm extractEntry lib/mongodb/commands/delete_command.js
+402 silly gunzTarPerm extractEntry lib/mongodb/commands/get_more_command.js
+403 silly gunzTarPerm extractEntry lib/mongodb/commands/insert_command.js
+404 silly gunzTarPerm extractEntry lib/mongodb/commands/kill_cursor_command.js
+405 silly gunzTarPerm extractEntry lib/mongodb/commands/query_command.js
+406 silly gunzTarPerm extractEntry lib/mongodb/commands/update_command.js
+407 silly gunzTarPerm extractEntry lib/mongodb/collection/aggregation.js
+408 silly gunzTarPerm extractEntry lib/mongodb/collection/commands.js
+409 silly gunzTarPerm extractEntry lib/mongodb/collection/core.js
+410 silly gunzTarPerm extractEntry lib/mongodb/collection/geo.js
+411 silly gunzTarPerm extractEntry lib/mongodb/collection/index.js
+412 silly gunzTarPerm extractEntry lib/mongodb/collection/query.js
+413 silly gunzTarPerm extractEntry lib/mongodb/collection/shared.js
+414 silly gunzTarPerm extractEntry lib/mongodb/responses/mongo_reply.js
+415 silly gunzTarPerm extractEntry lib/mongodb/auth/mongodb_cr.js
+416 silly gunzTarPerm extractEntry lib/mongodb/auth/mongodb_gssapi.js
+417 silly gunzTarPerm extractEntry lib/mongodb/auth/mongodb_plain.js
+418 silly gunzTarPerm extractEntry lib/mongodb/auth/mongodb_sspi.js
+419 silly gunzTarPerm extractEntry lib/mongodb/auth/mongodb_x509.js
+420 verbose write writing to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/package.json
+421 info preinstall mongodb@1.3.23
+422 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/package.json
+423 silly prepareForInstallMany adding bson@0.2.5 from mongodb dependencies
+424 silly prepareForInstallMany adding kerberos@0.0.3 from mongodb dependencies
+425 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/package.json
+426 silly cache add args [ 'bson@0.2.5', null ]
+427 verbose cache add spec bson@0.2.5
+428 silly cache add args [ 'kerberos@0.0.3', null ]
+429 verbose cache add spec kerberos@0.0.3
+430 silly cache add parsed spec Result {
+430 silly cache add   raw: 'bson@0.2.5',
+430 silly cache add   scope: null,
+430 silly cache add   name: 'bson',
+430 silly cache add   rawSpec: '0.2.5',
+430 silly cache add   spec: '0.2.5',
+430 silly cache add   type: 'version' }
+431 silly addNamed bson@0.2.5
+432 verbose addNamed "0.2.5" is a plain semver version for bson
+433 silly mapToRegistry name bson
+434 silly mapToRegistry using default registry
+435 silly mapToRegistry registry https://registry.npmjs.org/
+436 silly mapToRegistry uri https://registry.npmjs.org/bson
+437 verbose addNameVersion registry:https://registry.npmjs.org/bson not in flight; fetching
+438 silly cache add parsed spec Result {
+438 silly cache add   raw: 'kerberos@0.0.3',
+438 silly cache add   scope: null,
+438 silly cache add   name: 'kerberos',
+438 silly cache add   rawSpec: '0.0.3',
+438 silly cache add   spec: '0.0.3',
+438 silly cache add   type: 'version' }
+439 silly addNamed kerberos@0.0.3
+440 verbose addNamed "0.0.3" is a plain semver version for kerberos
+441 silly mapToRegistry name kerberos
+442 silly mapToRegistry using default registry
+443 silly mapToRegistry registry https://registry.npmjs.org/
+444 silly mapToRegistry uri https://registry.npmjs.org/kerberos
+445 verbose addNameVersion registry:https://registry.npmjs.org/kerberos not in flight; fetching
+446 verbose request uri https://registry.npmjs.org/bson
+447 verbose request no auth needed
+448 info attempt registry request try #1 at 5:11:28 PM
+449 verbose etag "3JXAFVCYEMNXPLETMIHLWVMZN"
+450 http request GET https://registry.npmjs.org/bson
+451 verbose request uri https://registry.npmjs.org/kerberos
+452 verbose request no auth needed
+453 info attempt registry request try #1 at 5:11:28 PM
+454 verbose etag "5B9SOFASVX50XL25XJSU8APYO"
+455 http request GET https://registry.npmjs.org/kerberos
+456 http 304 https://registry.npmjs.org/bson
+457 silly get cb [ 304,
+457 silly get   { date: 'Tue, 29 Sep 2015 22:11:28 GMT',
+457 silly get     via: '1.1 varnish',
+457 silly get     'cache-control': 'max-age=60',
+457 silly get     etag: '"3JXAFVCYEMNXPLETMIHLWVMZN"',
+457 silly get     age: '5',
+457 silly get     connection: 'keep-alive',
+457 silly get     'x-served-by': 'cache-iad2122-IAD',
+457 silly get     'x-cache': 'HIT',
+457 silly get     'x-cache-hits': '1',
+457 silly get     'x-timer': 'S1443564688.447275,VS0,VE0',
+457 silly get     vary: 'Accept' } ]
+458 verbose etag https://registry.npmjs.org/bson from cache
+459 verbose get saving bson to /Users/virtica/.npm/registry.npmjs.org/bson/.cache.json
+460 http 304 https://registry.npmjs.org/kerberos
+461 silly get cb [ 304,
+461 silly get   { date: 'Tue, 29 Sep 2015 22:11:28 GMT',
+461 silly get     via: '1.1 varnish',
+461 silly get     'cache-control': 'max-age=60',
+461 silly get     etag: '"5B9SOFASVX50XL25XJSU8APYO"',
+461 silly get     age: '5',
+461 silly get     connection: 'keep-alive',
+461 silly get     'x-served-by': 'cache-iad2144-IAD',
+461 silly get     'x-cache': 'HIT',
+461 silly get     'x-cache-hits': '1',
+461 silly get     'x-timer': 'S1443564688.452910,VS0,VE0',
+461 silly get     vary: 'Accept' } ]
+462 verbose etag https://registry.npmjs.org/kerberos from cache
+463 verbose get saving kerberos to /Users/virtica/.npm/registry.npmjs.org/kerberos/.cache.json
+464 silly cache afterAdd bson@0.2.5
+465 verbose afterAdd /Users/virtica/.npm/bson/0.2.5/package/package.json not in flight; writing
+466 verbose afterAdd /Users/virtica/.npm/bson/0.2.5/package/package.json written
+467 silly cache afterAdd kerberos@0.0.3
+468 verbose afterAdd /Users/virtica/.npm/kerberos/0.0.3/package/package.json not in flight; writing
+469 verbose afterAdd /Users/virtica/.npm/kerberos/0.0.3/package/package.json written
+470 silly install resolved [ { name: 'bson',
+470 silly install resolved     description: 'A bson parser for node.js and the browser',
+470 silly install resolved     keywords: [ 'mongodb', 'bson', 'parser' ],
+470 silly install resolved     version: '0.2.5',
+470 silly install resolved     author: { name: 'Christian Amor Kvalheim', email: 'christkv@gmail.com' },
+470 silly install resolved     contributors: [],
+470 silly install resolved     repository: { type: 'git', url: 'git://github.com/mongodb/js-bson.git' },
+470 silly install resolved     bugs: { url: 'https://github.com/mongodb/js-bson/issues' },
+470 silly install resolved     devDependencies: { nodeunit: '0.8.2', gleak: '0.2.3', one: '2.X.X' },
+470 silly install resolved     config: { native: false },
+470 silly install resolved     main: './lib/bson/index',
+470 silly install resolved     directories: { lib: './lib/bson' },
+470 silly install resolved     engines: { node: '>=0.6.19' },
+470 silly install resolved     scripts:
+470 silly install resolved      { install: '(node-gyp rebuild 2> builderror.log) || (exit 0)',
+470 silly install resolved        test: 'nodeunit ./test/node && TEST_NATIVE=TRUE nodeunit ./test/node' },
+470 silly install resolved     browser: 'lib/bson/bson.js',
+470 silly install resolved     licenses: [ [Object] ],
+470 silly install resolved     homepage: 'https://github.com/mongodb/js-bson',
+470 silly install resolved     _id: 'bson@0.2.5',
+470 silly install resolved     dist:
+470 silly install resolved      { shasum: '500d26d883ddc8e02f2c88011627636111c105c5',
+470 silly install resolved        tarball: 'http://registry.npmjs.org/bson/-/bson-0.2.5.tgz' },
+470 silly install resolved     _from: 'bson@0.2.5',
+470 silly install resolved     _npmVersion: '1.3.23',
+470 silly install resolved     _npmUser: { name: 'christkv', email: 'christkv@gmail.com' },
+470 silly install resolved     maintainers: [ [Object] ],
+470 silly install resolved     _shasum: '500d26d883ddc8e02f2c88011627636111c105c5',
+470 silly install resolved     _resolved: 'https://registry.npmjs.org/bson/-/bson-0.2.5.tgz',
+470 silly install resolved     readme: 'ERROR: No README data found!' },
+470 silly install resolved   { name: 'kerberos',
+470 silly install resolved     version: '0.0.3',
+470 silly install resolved     description: 'Kerberos library for Node.js',
+470 silly install resolved     main: 'index.js',
+470 silly install resolved     scripts:
+470 silly install resolved      { install: '(node-gyp rebuild 2> builderror.log) || (exit 0)',
+470 silly install resolved        test: 'nodeunit ./test' },
+470 silly install resolved     repository:
+470 silly install resolved      { type: 'git',
+470 silly install resolved        url: 'git+https://github.com/christkv/kerberos.git' },
+470 silly install resolved     keywords: [ 'kerberos', 'security', 'authentication' ],
+470 silly install resolved     devDependencies: { nodeunit: 'latest' },
+470 silly install resolved     author: { name: 'Christian Amor Kvalheim' },
+470 silly install resolved     license: 'Apache 2.0',
+470 silly install resolved     gitHead: 'bb01d4fe322e022999aca19da564e7d9db59a8ed',
+470 silly install resolved     bugs: { url: 'https://github.com/christkv/kerberos/issues' },
+470 silly install resolved     _id: 'kerberos@0.0.3',
+470 silly install resolved     dist:
+470 silly install resolved      { shasum: '4285d92a0748db2784062f5adcec9f5956cb818a',
+470 silly install resolved        tarball: 'http://registry.npmjs.org/kerberos/-/kerberos-0.0.3.tgz' },
+470 silly install resolved     _from: 'kerberos@0.0.3',
+470 silly install resolved     _npmVersion: '1.3.5',
+470 silly install resolved     _npmUser: { name: 'christkv', email: 'christkv@gmail.com' },
+470 silly install resolved     maintainers: [ [Object] ],
+470 silly install resolved     directories: {},
+470 silly install resolved     _shasum: '4285d92a0748db2784062f5adcec9f5956cb818a',
+470 silly install resolved     _resolved: 'https://registry.npmjs.org/kerberos/-/kerberos-0.0.3.tgz',
+470 silly install resolved     readme: 'ERROR: No README data found!',
+470 silly install resolved     homepage: 'https://github.com/christkv/kerberos#readme' } ]
+471 info install bson@0.2.5 into /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+472 info install kerberos@0.0.3 into /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+473 info installOne bson@0.2.5
+474 verbose installOne of bson to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb not in flight; installing
+475 info installOne kerberos@0.0.3
+476 verbose installOne of kerberos to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb not in flight; installing
+477 verbose lock using /Users/virtica/.npm/_locks/bson-f0adb90ae8e0409c.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson
+478 silly install write writing bson 0.2.5 to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson
+479 verbose lock using /Users/virtica/.npm/_locks/kerberos-ed8482a5f211ea6a.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos
+480 silly install write writing kerberos 0.0.3 to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos
+481 verbose unbuild node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson
+482 verbose unbuild node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos
+483 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson is being purged from base /Users/virtica/Development/NodeJS
+484 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson
+485 verbose tar unpack /Users/virtica/.npm/bson/0.2.5/package.tgz
+486 verbose tar unpacking to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson
+487 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson is being purged
+488 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson
+489 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos is being purged from base /Users/virtica/Development/NodeJS
+490 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos
+491 silly gunzTarPerm modes [ '755', '644' ]
+492 verbose tar unpack /Users/virtica/.npm/kerberos/0.0.3/package.tgz
+493 verbose tar unpacking to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos
+494 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos is being purged
+495 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos
+496 silly gunzTarPerm modes [ '755', '644' ]
+497 silly gunzTarPerm extractEntry package.json
+498 silly gunzTarPerm extractEntry package.json
+499 silly gunzTarPerm extractEntry README.md
+500 silly gunzTarPerm extractEntry LICENSE
+501 silly gunzTarPerm extractEntry README.md
+502 silly gunzTarPerm extractEntry build_browser.js
+503 silly gunzTarPerm extractEntry index.js
+504 silly gunzTarPerm extractEntry binding.gyp
+505 silly gunzTarPerm extractEntry binding.gyp
+506 silly gunzTarPerm extractEntry browser_build/package.json
+507 silly gunzTarPerm extractEntry lib/kerberos.js
+508 silly gunzTarPerm extractEntry browser_build/bson.js
+509 silly gunzTarPerm extractEntry build/Makefile
+510 silly gunzTarPerm extractEntry build/Release/.deps/Release/bson.node.d
+511 silly gunzTarPerm extractEntry build/Release/.deps/Release/obj.target/bson/ext/bson.o.d
+512 silly gunzTarPerm extractEntry lib/sspi.js
+513 silly gunzTarPerm extractEntry lib/kerberos_context.h
+514 silly gunzTarPerm extractEntry build/Release/bson.node
+515 silly gunzTarPerm extractEntry build/Release/linker.lock
+516 silly gunzTarPerm extractEntry lib/kerberos.cc
+517 silly gunzTarPerm extractEntry lib/kerberos.h
+518 silly gunzTarPerm extractEntry lib/auth_processes/mongodb.js
+519 silly gunzTarPerm extractEntry lib/kerberos_context.cc
+520 silly gunzTarPerm extractEntry build/Release/obj.target/bson/ext/bson.o
+521 silly gunzTarPerm extractEntry build/binding.Makefile
+522 silly gunzTarPerm extractEntry lib/base64.c
+523 silly gunzTarPerm extractEntry lib/kerberosgss.c
+524 silly gunzTarPerm extractEntry build/bson.target.mk
+525 silly gunzTarPerm extractEntry build/config.gypi
+526 silly gunzTarPerm extractEntry build/gyp-mac-tool
+527 silly gunzTarPerm extractEntry Makefile
+528 silly gunzTarPerm extractEntry lib/kerberosgss.h
+529 silly gunzTarPerm extractEntry lib/base64.h
+530 silly gunzTarPerm extractEntry builderror.log
+531 silly gunzTarPerm extractEntry ext/index.js
+532 silly gunzTarPerm extractEntry lib/win32/base64.c
+533 silly gunzTarPerm extractEntry lib/win32/base64.h
+534 silly gunzTarPerm extractEntry lib/win32/kerberos.cc
+535 silly gunzTarPerm extractEntry lib/win32/kerberos.h
+536 silly gunzTarPerm extractEntry ext/Makefile
+537 silly gunzTarPerm extractEntry ext/bson.cc
+538 silly gunzTarPerm extractEntry lib/win32/kerberos_sspi.c
+539 silly gunzTarPerm extractEntry lib/win32/kerberos_sspi.h
+540 silly gunzTarPerm extractEntry lib/win32/worker.cc
+541 silly gunzTarPerm extractEntry lib/win32/worker.h
+542 silly gunzTarPerm extractEntry ext/bson.h
+543 silly gunzTarPerm extractEntry ext/nan.h
+544 silly gunzTarPerm extractEntry lib/win32/wrappers/security_credentials.js
+545 silly gunzTarPerm extractEntry lib/win32/wrappers/security_buffer.js
+546 silly gunzTarPerm extractEntry lib/win32/wrappers/security_buffer_descriptor.js
+547 silly gunzTarPerm extractEntry lib/win32/wrappers/security_context.js
+548 silly gunzTarPerm extractEntry ext/win32/ia32/bson.node
+549 silly gunzTarPerm extractEntry ext/win32/x64/bson.node
+550 silly gunzTarPerm extractEntry lib/win32/wrappers/security_buffer_descriptor.h
+551 silly gunzTarPerm extractEntry lib/win32/wrappers/security_buffer.cc
+552 silly gunzTarPerm extractEntry lib/win32/wrappers/security_buffer.h
+553 silly gunzTarPerm extractEntry ext/wscript
+554 silly gunzTarPerm extractEntry lib/win32/wrappers/security_context.h
+555 silly gunzTarPerm extractEntry lib/bson/binary.js
+556 silly gunzTarPerm extractEntry lib/bson/code.js
+557 silly gunzTarPerm extractEntry lib/win32/wrappers/security_buffer_descriptor.cc
+558 silly gunzTarPerm extractEntry lib/win32/wrappers/security_credentials.cc
+559 silly gunzTarPerm extractEntry lib/win32/wrappers/security_credentials.h
+560 silly gunzTarPerm extractEntry lib/win32/wrappers/security_context.cc
+561 silly gunzTarPerm extractEntry lib/bson/db_ref.js
+562 silly gunzTarPerm extractEntry lib/bson/double.js
+563 silly gunzTarPerm extractEntry lib/bson/float_parser.js
+564 silly gunzTarPerm extractEntry lib/bson/bson.js
+565 silly gunzTarPerm extractEntry lib/bson/long.js
+566 silly gunzTarPerm extractEntry lib/bson/max_key.js
+567 silly gunzTarPerm extractEntry lib/worker.cc
+568 silly gunzTarPerm extractEntry lib/worker.h
+569 silly gunzTarPerm extractEntry lib/bson/min_key.js
+570 silly gunzTarPerm extractEntry lib/bson/objectid.js
+571 silly gunzTarPerm extractEntry lib/bson/symbol.js
+572 silly gunzTarPerm extractEntry lib/bson/binary_parser.js
+573 silly gunzTarPerm extractEntry lib/bson/timestamp.js
+574 silly gunzTarPerm extractEntry lib/bson/index.js
+575 silly gunzTarPerm extractEntry test/kerberos_tests.js
+576 silly gunzTarPerm extractEntry test/kerberos_win32_test.js
+577 silly gunzTarPerm extractEntry .travis.yml
+578 silly gunzTarPerm extractEntry tools/gleak.js
+579 silly gunzTarPerm extractEntry tools/jasmine-1.1.0/jasmine-html.js
+580 silly gunzTarPerm extractEntry tools/jasmine-1.1.0/jasmine.js
+581 silly gunzTarPerm extractEntry test/win32/security_buffer_descriptor_tests.js
+582 silly gunzTarPerm extractEntry test/win32/security_buffer_tests.js
+583 silly gunzTarPerm extractEntry tools/jasmine-1.1.0/MIT.LICENSE
+584 silly gunzTarPerm extractEntry tools/jasmine-1.1.0/jasmine.css
+585 silly gunzTarPerm extractEntry tools/jasmine-1.1.0/jasmine_favicon.png
+586 silly gunzTarPerm extractEntry test/win32/security_credentials_tests.js
+587 verbose write writing to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos/package.json
+588 info preinstall kerberos@0.0.3
+589 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos/package.json
+590 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos/package.json
+591 silly install resolved []
+592 verbose about to build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos
+593 info build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos
+594 info linkStuff kerberos@0.0.3
+595 silly linkStuff kerberos@0.0.3 has /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules as its parent node_modules
+596 verbose linkBins kerberos@0.0.3
+597 verbose linkMans kerberos@0.0.3
+598 verbose rebuildBundles kerberos@0.0.3
+599 info install kerberos@0.0.3
+600 verbose write writing to /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson/package.json
+601 info preinstall bson@0.2.5
+602 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson/package.json
+603 verbose readDependencies loading dependencies from /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson/package.json
+604 silly install resolved []
+605 verbose about to build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson
+606 info build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson
+607 info linkStuff bson@0.2.5
+608 silly linkStuff bson@0.2.5 has /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules as its parent node_modules
+609 verbose linkBins bson@0.2.5
+610 verbose linkMans bson@0.2.5
+611 verbose rebuildBundles bson@0.2.5
+612 info install bson@0.2.5
+613 info nfc@0.0.4 Failed to exec install script
+614 verbose unsafe-perm in lifecycle false
+615 verbose unlock done using /Users/virtica/.npm/_locks/nfc-dfe8b1bb2c728e8c.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc
+616 verbose unsafe-perm in lifecycle false
+617 info postinstall kerberos@0.0.3
+618 verbose unlock done using /Users/virtica/.npm/_locks/kerberos-ed8482a5f211ea6a.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/kerberos
+619 info postinstall bson@0.2.5
+620 verbose unlock done using /Users/virtica/.npm/_locks/bson-f0adb90ae8e0409c.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb/node_modules/bson
+621 verbose about to build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+622 info build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+623 info linkStuff mongodb@1.3.23
+624 silly linkStuff mongodb@1.3.23 has /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules as its parent node_modules
+625 verbose linkBins mongodb@1.3.23
+626 verbose linkMans mongodb@1.3.23
+627 verbose rebuildBundles mongodb@1.3.23
+628 verbose rebuildBundles [ 'bson', 'kerberos' ]
+629 info install mongodb@1.3.23
+630 info postinstall mongodb@1.3.23
+631 verbose unlock done using /Users/virtica/.npm/_locks/mongodb-f6055859725796f9.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin/node_modules/mongodb
+632 verbose about to build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin
+633 info build /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin
+634 info linkStuff mongoskin@0.6.0
+635 silly linkStuff mongoskin@0.6.0 has /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules as its parent node_modules
+636 verbose linkBins mongoskin@0.6.0
+637 verbose linkMans mongoskin@0.6.0
+638 verbose rebuildBundles mongoskin@0.6.0
+639 verbose rebuildBundles [ 'mongodb' ]
+640 info install mongoskin@0.6.0
+641 info postinstall mongoskin@0.6.0
+642 verbose unlock done using /Users/virtica/.npm/_locks/mongoskin-9f3a0b64445ead03.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/mongoskin
+643 verbose about to build /Users/virtica/Development/NodeJS/node_modules/rfidea
+644 verbose unlock done using /Users/virtica/.npm/_locks/rfidea-2287e2ca449a9419.lock for /Users/virtica/Development/NodeJS/node_modules/rfidea
+645 verbose stack Error: nfc@0.0.4 install: `node-gyp rebuild`
+645 verbose stack Exit status 1
+645 verbose stack     at EventEmitter.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/lifecycle.js:214:16)
+645 verbose stack     at emitTwo (events.js:87:13)
+645 verbose stack     at EventEmitter.emit (events.js:172:7)
+645 verbose stack     at ChildProcess.<anonymous> (/usr/local/lib/node_modules/npm/lib/utils/spawn.js:24:14)
+645 verbose stack     at emitTwo (events.js:87:13)
+645 verbose stack     at ChildProcess.emit (events.js:172:7)
+645 verbose stack     at maybeClose (internal/child_process.js:817:16)
+645 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:211:5)
+646 verbose pkgid nfc@0.0.4
+647 verbose cwd /Users/virtica/Development/NodeJS/doswell
+648 error Darwin 14.5.0
+649 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "rfidea"
+650 error node v4.1.0
+651 error npm  v2.14.3
+652 error code ELIFECYCLE
+653 error nfc@0.0.4 install: `node-gyp rebuild`
+653 error Exit status 1
+654 error Failed at the nfc@0.0.4 install script 'node-gyp rebuild'.
+654 error This is most likely a problem with the nfc package,
+654 error not with npm itself.
+654 error Tell the author that this fails on your system:
+654 error     node-gyp rebuild
+654 error You can get their info via:
+654 error     npm owner ls nfc
+654 error There is likely additional logging output above.
+655 verbose exit [ 1, true ]
+656 verbose unbuild node_modules/rfidea/node_modules/nfc
+657 info preuninstall nfc@0.0.4
+658 info uninstall nfc@0.0.4
+659 verbose unbuild rmStuff nfc@0.0.4 from /Users/virtica/Development/NodeJS/node_modules
+660 verbose unbuild rmStuff in /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules
+661 info postuninstall nfc@0.0.4
+662 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc is being purged from base /Users/virtica/Development/NodeJS
+663 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc
+664 silly vacuum-fs purging /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules/nfc
+665 silly vacuum-fs quitting because other entries in /Users/virtica/Development/NodeJS/node_modules/rfidea/node_modules
+666 verbose unbuild node_modules/rfidea
+667 info preuninstall rfidea@0.0.2
+668 info uninstall rfidea@0.0.2
+669 verbose unbuild rmStuff rfidea@0.0.2 from /Users/virtica/Development/NodeJS/node_modules
+670 info postuninstall rfidea@0.0.2
+671 silly gentlyRm /Users/virtica/Development/NodeJS/node_modules/rfidea is being purged from base /Users/virtica/Development/NodeJS
+672 verbose gentlyRm don't care about contents; nuking /Users/virtica/Development/NodeJS/node_modules/rfidea
+673 silly vacuum-fs purging /Users/virtica/Development/NodeJS/node_modules/rfidea
+674 silly vacuum-fs removing /Users/virtica/Development/NodeJS/node_modules
+675 silly vacuum-fs finished vacuuming up to /Users/virtica/Development/NodeJS
